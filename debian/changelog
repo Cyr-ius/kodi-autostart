@@ -1,0 +1,6 @@
+kodi-autostart (1.0) stretch; urgency=medium
+
+  * Create daemon for start Kodi at the system startup
+
+ -- Cyr-ius <cyr-ius@ipocus.net>  Sat, 8 Apr 2017 17:20:01 +0000
+

@@ -1,0 +1,11 @@
+Source: kodi-autostart
+Section: admin
+Priority: required
+Maintainer: Cyr-ius <cyr-ius@ipocus.net>
+Build-Depends: debhelper (>= 8.0.0)
+Homepage: https://github.com/cyr-ius/rpi123-gen-image
+
+Package: kodi-autostart
+Architecture: all
+Depends: ${misc:Depends}, ply-lite (>= 1.0), fbset, libcap2-bin, kodi, kodi-bin
+Description: Start Kodi at system startup

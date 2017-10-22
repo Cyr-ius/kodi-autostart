@@ -1,0 +1,66 @@
+#!/bin/bash
+# Modified by C.Levasseur
+#
+# Original Author : Sam Nazarko  email@samnazarko.co.uk
+
+if [ $(basename $0) = "manual-update" ]; then
+        script=$(mktemp) && cp -f $0 $script && chmod u+x $script && exec $script
+	exit $?
+fi
+
+export TERM=linux
+export LANG=C
+export DEBIAN_PRIORITY=critical
+failed=/var/tmp/.failed_update
+suppress=/var/tmp/.suppress_update_checks
+
+systemctl stop getty@tty1
+clear > /dev/tty1
+chvt 1
+systemctl stop mediacenter
+
+vres=$(/bin/fbset | grep geometry | awk '{print $3}')
+
+dialog --backtitle "Package configuration" --title "Kodi Update" --infobox "\n    Checking for updates to install..." 5 48 > /dev/tty1
+
+err=$(dpkg --configure --force-confdef --force-confold -a 2>&1)
+if [ -n "$err" ]; then sleep 4; dialog --backtitle "Package configuration" --title "Kodi Update" --infobox "$err\n\nContinuing in 10 seconds..." 0 0 >/dev/tty1; sleep 10; fi
+
+# Package downloads have been done in the addon, so let's get right to upgrade.
+
+rm -f $failed
+tmp=$(mktemp)
+if ! debconf-apt-progress --logfile $tmp -- apt-get -f -y dist-upgrade > /dev/tty1
+then
+	pkg=$(basename $(grep -i -A 1 "Errors were encountered while processing" $tmp | tail -n 1)); pkgarr=(${pkg//_/ })
+	package="${pkgarr[0]}"; if [ -n "${pkgarr[1]}" ]; then package="$package (${pkgarr[1]})"; fi
+	if [ -z "$package" ]; then package="(unknown package)"; fi
+
+	dialog --backtitle "Package configuration" --title "Kodi Update Error" --infobox "\n    An error occurred while installing the following package:\n    $package\n\n    Please report this problem on the KBOX forum, making sure to\n    include debug logs. Attempting to restart Kodi in 30 seconds...\n" 9 74 > /dev/tty1
+	echo $package > $failed; chown kodi:kodi $failed
+	sleep 25
+else
+	rm -f $suppress
+	[ -e /etc/kodi/prefs.d/update_preferences ] && . /etc/kodi/prefs.d/update_preferences
+	desired_kernel=$(dpkg-query -W -f='${Depends}\n' "rpi*-*" | sed -e 's/, */,/g' -e 's/\,/\n/g' | egrep -o "^linux-image\S*")
+	running_kernel="linux-image-$(uname -r)"
+	removable_kernels=$(dpkg-query -W -f='${Package}\n' "linux-image-*" | grep -v "$desired_kernel\|$running_kernel")
+
+	if [ -n "$removable_kernels" ] && [ "$KBOX_KERNEL_AUTOREMOVE" = "1" ]
+	then
+		if ! debconf-apt-progress --logfile $tmp -- apt-get -y purge $removable_kernels > /dev/tty1
+		then
+			dialog --backtitle "Package configuration" --title "Kodi Update Error" --infobox "\n    An error occurred removing no longer required kernel packages.\n\n    Please report this problem on the KBOX forum, making sure to\n    include debug logs. Attempting to restart Kodi in 30 seconds...\n" 9 74 > /dev/tty1
+			echo -e "\nError removing old kernels during manual-update:" >> /var/log/apt/term.log
+			cat $tmp >> /var/log/apt/term.log
+			sleep 25
+		fi
+	fi
+fi
+sleep 5
+
+rm -f $tmp
+if [ -f /tmp/reboot-needed ] || [ -f /var/run/reboot-required ]; then reboot; exit; fi
+clear > /dev/tty1
+systemctl start mediacenter
+rm -f $0
