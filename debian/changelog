@@ -1,3 +1,9 @@
+kodi-autostart (1.1) stretch; urgency=medium
+
+  * [6c818d9] Disable manuel.service at startup
+
+ -- Cyr-ius <cyr-ius@Hygor>  Tue, 24 Oct 2017 22:00:05 +0200
+
 kodi-autostart (1.0) stretch; urgency=medium
 
   * Create daemon for start Kodi at the system startup
