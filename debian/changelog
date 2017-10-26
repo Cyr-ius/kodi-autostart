@@ -1,3 +1,9 @@
+kodi-autostart (1.2) stretch; urgency=medium
+
+  * [fe4cfaf] Fix cap_sys_reboot
+
+ -- Cyr-ius <cyr-ius@Hygor>  Thu, 26 Oct 2017 22:40:57 +0200
+
 kodi-autostart (1.1) stretch; urgency=medium
 
   * [6c818d9] Disable manuel.service at startup
