@@ -31,7 +31,7 @@ case $CODE in
 	;;
 5)
 	vres=$(/bin/fbset | grep geometry | awk '{print $3}')
-	dialog --backtitle "Package configuration" --title "Kodi Update" --infobox "\n     Establishing a connection to the Kodi update servers..." 5 71 > /dev/tty1
+	dialog --backtitle "Package configuration" --title " Kodi Update " --infobox "\n     Establishing a connection to the Kodi update servers..." 5 71 > /dev/tty1
 
 	count=60
 	while [ $count -gt 0 ]; do
@@ -45,13 +45,13 @@ case $CODE in
 
 	if [ $count -lt 1 ]
 	then
-		dialog --backtitle "Package configuration" --title "Kodi Update" --infobox "\n    No internet connection was found. Rebooting in 20 seconds." 5 71 > /dev/tty1
+		dialog --backtitle "Package configuration" --title " Kodi Update " --infobox "\n    No internet connection was found. Rebooting in 20 seconds." 5 71 > /dev/tty1
 		sleep 20; reboot
 	fi
-        dialog --backtitle "Package configuration" --title "Kodi Update" --infobox "\n         Updating the list of available Kodi packages..." 5 71 > /dev/tty1
+        dialog --backtitle "Package configuration" --title " Kodi Update " --infobox "\n         Updating the list of available Kodi packages..." 5 71 > /dev/tty1
         err=$(apt-get -qq update); if [ -n "$err" ]
         then
-                dialog --backtitle "Package configuration" --title "Kodi Update" --infobox "The following errors occured while searching for new packages:\n\n${err}\n\nContinuing in 20 seconds..." 0 0 > /dev/tty1
+                dialog --backtitle "Package configuration" --title " Kodi Update " --infobox "The following errors occured while searching for new packages:\n\n${err}\n\nContinuing in 20 seconds..." 0 0 > /dev/tty1
                 sleep 20
         fi
         systemctl start manual-update
@@ -74,7 +74,6 @@ while true; do
 	endtime=$(date +%s)
 	seconds=$(($endtime - $starttime)); hours=$((seconds / 3600)); seconds=$((seconds % 3600)); minutes=$((seconds / 60)); seconds=$((seconds % 60))
 	echo "Kodi exited with return code $CODE after $hours hours, $minutes minutes and $seconds seconds"
-
 	fb_restore
 	case $CODE in
 	64 )
@@ -88,7 +87,7 @@ while true; do
 		chvt 1
 		/usr/bin/setterm --cursor off >/dev/tty1
 		/usr/bin/clear >/dev/tty1
-		/bin/ply-image "$CODE"
+		/usr/bin/ply-image "$CODE"
 		read -n 1 -s -t 10 key </dev/tty1
 	fi
 	if [ "$key" = $'\e' -o "$GETTY" -eq 0 ]; then
