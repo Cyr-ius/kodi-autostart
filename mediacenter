@@ -66,7 +66,7 @@ fi
 while true; do
 	if [ -f /home/kodi/.factoryreset ]; then rm -rf /home/kodi/.kodi && rm /home/kodi/.factoryreset; fi
 	if [ -f /tmp/guisettings.restore ]; then mv /tmp/guisettings.restore /home/kodi/.kodi/userdata/guisettings.xml; fi
-	KODI=/usr/lib/kodi/kodi.bin
+	KODI=/usr/lib/kodi/kodi-rbpi
 	setcap 'cap_net_bind_service=+ep' $KODI
 	starttime=$(date +%s)
 	echo "Starting Kodi..."
