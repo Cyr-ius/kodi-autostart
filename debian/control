@@ -7,5 +7,5 @@ Homepage: https://github.com/cyr-ius/rpi123-gen-image
 
 Package: kodi-autostart
 Architecture: any
-Depends: ${misc:Depends}, ply-lite (>= 1.0), fbset, libcap2-bin, kodi | kodi-v7+, kodi-bin | kodi-bin-v7+
+Depends: ${misc:Depends}, ply-lite (>= 1.0), fbset, libcap2-bin, kodi-bin
 Description: Start Kodi at system startup

@@ -61,7 +61,7 @@ fi
 sleep 5
 
 rm -f $tmp
-if [ -f /tmp/reboot-needed ] || [ -f /var/run/reboot-required ]; then reboot; exit; fi
+if [ -f /var/run/reboot-required ]; then reboot; exit; fi
 clear > /dev/tty1
 systemctl start mediacenter
 rm -f $0
