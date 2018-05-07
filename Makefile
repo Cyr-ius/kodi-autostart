@@ -13,13 +13,13 @@ ifeq ($(RPI_MODEL),rbp3)
 	CROSS_COMPILE=aarch64-linux-gnu 
 endif
 
-rbp%:
-	RPI_MODEL=$@ $(MAKE) package
-
 all:
-	@echo "For build package , please type make package"
+	@echo "For build package , please type make rbpX"
 
-package:
+rbp1 rbp2 rbp3:
+	RPI_MODEL=$@ $(MAKE) .package
+	
+.package:
 	dpkg-buildpackage -us -uc -B -a$(ARCH)
 
 reset:
