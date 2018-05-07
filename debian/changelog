@@ -1,3 +1,9 @@
+kodi-autostart (1.3.4) stretch; urgency=medium
+
+  * UNRELEASED
+
+ -- Cyr-ius <cyr-ius@Hygor>  Mon, 07 May 2018 13:26:59 +0200
+
 kodi-autostart (1.3.3) stretch; urgency=medium
 
   * [4ca3b21] Fix makefile
