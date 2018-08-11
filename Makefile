@@ -1,26 +1,12 @@
-ifeq ($(RPI_MODEL),rbp1)
-	ARCH=armhf
-	CROSS_COMPILE=arm-linux-gnueabihf
-endif
+include ../depends/Makefile.include
+DEPS= ../depends/Makefile.include Makefile
 
-ifeq ($(RPI_MODEL),rbp2)
-	ARCH=armhf
-	CROSS_COMPILE=arm-linux-gnueabihf
-endif
-
-ifeq ($(RPI_MODEL),rbp3)
-	ARCH=arm64
-	CROSS_COMPILE=aarch64-linux-gnu 
-endif
+LIBDYLIB=kodi-autostart
 
 all:
-	@echo "For build package , please type make rbpX"
 
-rbp1 rbp2 rbp3:
-	RPI_MODEL=$@ $(MAKE) .package
-	
-.package:
-	dpkg-buildpackage -us -uc -B -a$(ARCH)
+rbpi1 rbpi2 rbpi3 linux64:
+	MODEL=$@ $(MAKE) package
 
-reset:
-	debclean
+package:
+	dpkg-buildpackage -us -uc -B -a$(ARCH) -tc
