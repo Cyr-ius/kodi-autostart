@@ -1,3 +1,10 @@
+kodi-autostart (1.3.7) stretch; urgency=medium
+
+  * [2e9c5af] Execute generic binary file
+  * [944dbd5] Set SSL_CERT_FILE for load System CA Authority
+
+ -- Cyr-ius <cyr-ius@Hygor>  Sun, 30 Jun 2019 14:10:44 +0200
+
 kodi-autostart (1.3.5) stretch; urgency=medium
 
   * [9b95037]  new makefile with depends
